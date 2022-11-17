@@ -12,7 +12,6 @@ const movieRouter = require('./routes/movieRouter')
 
 
 app.post('/register', registerValidator, (req, res)=>{
-    // console.log('validated form')
     db.query(`select username from users where username = '${req.body.email}'`, (err, result) => {
         if(err) {
             console.log('Error: ' + err)
@@ -20,7 +19,6 @@ app.post('/register', registerValidator, (req, res)=>{
             if(result.length >= 1) {
                 return res.status(200).json( {msg: 'Username already exists', result} )
             } else {
-            // console.log('Possible to create Username');
                 const hashPassword = bcrypt.hashSync(req.body.password, 10)
                 db.query(`insert into users (firstname, lastname, username, password) values ('${req.body.firstname}','${req.body.lastname}','${req.body.email}','${hashPassword}')`, (err, result)=> {
                     if(err) {
@@ -35,15 +33,14 @@ app.post('/register', registerValidator, (req, res)=>{
     
 })
 
-
-app.post('/login',[loginValidator], (req, res)=>{
+app.post('/login',loginValidator, (req, res)=>{
     const {username, password} = req.body
     // authenticate user
     db.query(`select id from users where username = '${username}'`, (err, result)=> {
         if(err) {
             console.log('Error:' + err)
         } else {
-            if(result && result.length == 0) {
+            if(result && result.length === 0) {
                 return res.status(400).json({msg: 'Invalid username or password'})
             } else {
                 const userId = Number(result[0]['id']);
@@ -94,18 +91,7 @@ app.post('/token', (req, res) => {
     })
 })
 
-app.delete('/logout', (req, res) => {
-    const query = ``;
-    // db.query(query, (err, result)=> {
-    //         console.log('Error:' + err);
-    //     if(err) {
-    //         console.log('Error:' + err);
-    //     } else {
-    //         res.status(200).json(result)
-    //     }
-    // })
-    // res.sendStatus(204)
-})
+app.delete('/logout', (req, res) => {})
 
 app.use('/movies', movieRouter)
 
