@@ -13,5 +13,5 @@ Steps to Run the Application
 
 4. Use `npm start` to run the application.
 
-5. Use postman to test the application. The postman collection will be available at    
-postman-collection folder
+5. Use postman to test the application. The postman collection and database will be 
+   available at postman-collection folder
